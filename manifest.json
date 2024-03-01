@@ -21,6 +21,17 @@
       "default_title": "NotOfaque",
       "default_popup": "popup.html"
     },
+
+    "content_scripts": [
+      {
+        "matches":[
+          "<all_urls>"
+        ],
+        "js":[
+          "contentScript.js"
+        ]
+      }
+    ],
     
     "host_permissions" : [
       "http://*/",
@@ -30,7 +41,8 @@
     "permissions" :[
       "contextMenus",
       "activeTab",
-      "tabs"
+      "tabs",
+      "scripting"
     ]
 
 }
