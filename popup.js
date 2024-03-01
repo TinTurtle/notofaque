@@ -13,12 +13,12 @@ document.querySelector('form').addEventListener('submit', (event) => {
             body: formData
         })
             .then(response => {
-                // Check if the response is successful
+               
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
-                // Handle different content types
+                
                 const contentType = response.headers.get("content-type");
                 if (contentType && contentType.includes("application/json")) {
                     return response.json();
@@ -27,7 +27,7 @@ document.querySelector('form').addEventListener('submit', (event) => {
                 }
             })
             .then(data => {
-                // Update the result div with the received data
+                
                 if(data.result==="FAKE"){
                     alert("FAKE DETECTED!")
                 }

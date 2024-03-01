@@ -1,14 +1,14 @@
-# Import necessary libraries
+
 from flask import Flask, render_template, request, jsonify
 from flask import Flask, render_template, request
 import cv2
 from torchvision import transforms
 from werkzeug.utils import secure_filename
-# from model import Model  # Import your Model class
-# from Predict.ipynb import predict  # Import your predict function
+# from model import Model  
+# from Predict.ipynb import predict 
 import torch
 import numpy as np
-# Model with feature visualization
+
 from torch import nn
 from torchvision import models
 import torch.nn.functional as F
@@ -35,7 +35,7 @@ class Model(nn.Module):
 
     def forward(self, x):
         if x.dim() == 4:
-            # Add a batch and sequence dimension
+       
             x = x.unsqueeze(0).unsqueeze(1)
         
         batch_size, seq_length, c, h, w = x.shape
@@ -50,21 +50,21 @@ import torch
 
 
 def inv_normalize(image):
-    # Define mean and std used during normalization
+    
     mean = [0.485, 0.456, 0.406]
     std = [0.229, 0.224, 0.225]
 
-    # Convert the image to a PyTorch tensor
+   
     image = torch.tensor(image)
 
-    # Invert the normalization
+   
     if len(image.shape) == 4:
-        # Assuming image has shape (batch_size, channels, height, width)
+   
         image = image * torch.tensor(std).reshape(1, -1, 1, 1) + torch.tensor(
             mean
         ).reshape(1, -1, 1, 1)
     elif len(image.shape) == 3:
-        # Assuming image has shape (channels, height, width)
+       
         image = image * torch.tensor(std).reshape(-1, 1, 1) + torch.tensor(
             mean
         ).reshape(-1, 1, 1)
@@ -111,7 +111,6 @@ def predict(model, img, path="./"):
     r, g, b = cv2.split(result_image)
     result_image = cv2.merge((r, g, b))
 
-    # Return a dictionary with the result and confidence
     return {
         "result_image": result_image,
         "result": int(prediction.item()),
@@ -119,13 +118,13 @@ def predict(model, img, path="./"):
     }
 
 
-# Load the deepfake detection model
-model = Model(2).cuda()  # Instantiate the model on the GPU
+
+model = Model(2).cuda()  
 path_to_model = "./assets/model_93_acc_100_frames_celeb_FF_data.pt"
 model.load_state_dict(torch.load(path_to_model))
 model.eval()
 
-# Define image preprocessing transformation
+
 im_size = 112
 mean = [0.485, 0.456, 0.406]
 std = [0.229, 0.224, 0.225]
@@ -139,7 +138,6 @@ transform = transforms.Compose(
 )
 
 
-# Define route for home page
 temp_dir = "./temp"
 os.makedirs(temp_dir, exist_ok=True)
 
@@ -162,7 +160,7 @@ def index():
     return render_template("index.html")
 
 
-# ... (other code)
+
 
 
 @app.route("/predict", methods=["GET","POST"])
@@ -170,18 +168,17 @@ def predict_route():
     if request.method == "POST":
         file = request.files["file"]
 
-        # Save the file temporarily
         file_path = "./temp/temp_file"
         file.save(file_path)
 
         # Perform prediction based on file type
         if file.content_type.startswith("image"):
-            # For image files
+           
             img = transform(cv2.imread(file_path))
             img = img.unsqueeze(0).unsqueeze(1).cuda()
             prediction_result = predict(model, img, path="./")
         elif file.content_type.startswith("video"):
-            # For video files
+           
             video_frames = []
             cap = cv2.VideoCapture(file_path)
 
@@ -197,7 +194,7 @@ def predict_route():
             cap.release()
             cv2.destroyAllWindows()
 
-            # Combine video frames into a video
+          
             result_video_path = "./temp/result_video.avi"
             height, width, layers = video_frames[0].shape
             video = cv2.VideoWriter(
@@ -211,16 +208,16 @@ def predict_route():
         else:
             return render_template("index.html", result="Unsupported file type")
 
-        # Display the results
+       
         if prediction_result["result"] == 1:
             result = "REAL"
         else:
             result = "FAKE"
 
-        # Pass the result to the HTML template for display
+        
         prediction_result = {"result": result}
 
-    # Return the result as JSON
+    
         return jsonify(prediction_result)
 
 
