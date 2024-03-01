@@ -29,9 +29,12 @@ document.querySelector('form').addEventListener('submit', (event) => {
             .then(data => {
                 
                 if(data.result==="FAKE"){
-                    alert("FAKE DETECTED!")
+                    alert("DEEPFAKE DETECTED!\nReport on this link: https://eservices.tnpolice.gov.in/CCTNSNICSDC/RedirectToNationalCyberCrimeReportingPortal%28NCRP%29")
                 }
-                document.getElementById('result').innerText = `Result: ${data.result}`;
+                if(data.result==="REAL"){
+                    alert("Image is Real.")
+                }
+                
             })
             .catch(error => console.error('Error:', error));
     }
