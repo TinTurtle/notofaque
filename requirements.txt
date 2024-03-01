@@ -1,0 +1,6 @@
+Flask
+opencv-python
+torchvision
+face-recognition
+torch
+matplotlib

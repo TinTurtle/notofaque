@@ -4,45 +4,36 @@
     "description": "Easy Deep Fake Detection",
     "manifest_version": 3,
     "icons": {
-      "128": "assets/ext-icon.png"
-    },
-
-    "background": {
-      "service_worker": "background.js"
-    },
-
-    "action": {
-      "default_icon": {
-        "16": "assets/ext-icon.png",
-        "32": "assets/ext-icon.png",
-        "48": "assets/ext-icon.png",
         "128": "assets/ext-icon.png"
-      },
-      "default_title": "NotOfaque",
-      "default_popup": "popup.html"
     },
-
+    "action": {
+        "default_icon": {
+            "16": "assets/ext-icon.png",
+            "32": "assets/ext-icon.png",
+            "48": "assets/ext-icon.png",
+            "128": "assets/ext-icon.png"
+        },
+        "default_title": "NotOfaque",
+        "default_popup": "popup.html"
+    },
     "content_scripts": [
-      {
-        "matches":[
-          "<all_urls>"
-        ],
-        "js":[
-          "contentScript.js"
-        ]
-      }
+        {
+            "matches": [
+                "<all_urls>"
+            ],
+            "js": [
+                "contentScript.js"
+            ]
+        }
     ],
-    
-    "host_permissions" : [
-      "http://*/",
-      "https://*/"
+    "host_permissions": [
+        "http://*/",
+        "https://*/"
     ],
-
-    "permissions" :[
-      "contextMenus",
-      "activeTab",
-      "tabs",
-      "scripting"
+    "permissions": [
+        "contextMenus",
+        "activeTab",
+        "tabs",
+        "scripting"
     ]
-
 }

@@ -36,6 +36,7 @@ chrome.runtime.onInstalled.addListener(() => {
 	});
 });
 
+
 chrome.contextMenus.onClicked.addListener(( info, tab ) => {
     if (info.menuItemId == 'DeepFakeChecker') {
       // checks, if content.js is already injected, otherwise content.js is added
@@ -56,5 +57,34 @@ chrome.contextMenus.onClicked.addListener(( info, tab ) => {
           }
         });
       });
+    }
+});
+// background.js
+// background.js
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.action === 'predict') {
+        // Access the selected file from the content script
+        const selectedFile = message.selectedFile;
+
+        if (selectedFile) {
+            // Use FormData to handle file uploads
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+
+            // Make a request to your Flask server with the selected file
+            fetch('http://127.0.0.1:5000/predict', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Send the result back to the popup script
+                    chrome.runtime.sendMessage({
+                        action: 'predictionResult',
+                        result: data.result
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
     }
 });
