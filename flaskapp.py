@@ -1,11 +1,10 @@
-
 from flask import Flask, render_template, request, jsonify
 from flask import Flask, render_template, request
 import cv2
 from torchvision import transforms
 from werkzeug.utils import secure_filename
-# from model import Model  
-# from Predict.ipynb import predict 
+# from model import Model
+# from Predict.ipynb import predict
 import torch
 import numpy as np
 
@@ -118,7 +117,6 @@ def predict(model, img, path="./"):
     }
 
 
-
 model = Model(2).cuda()  
 path_to_model = "./assets/model_93_acc_100_frames_celeb_FF_data.pt"
 model.load_state_dict(torch.load(path_to_model))
@@ -160,9 +158,6 @@ def index():
     return render_template("index.html")
 
 
-
-
-
 @app.route("/predict", methods=["GET","POST"])
 def predict_route():
     if request.method == "POST":
@@ -171,7 +166,7 @@ def predict_route():
         file_path = "./temp/temp_file"
         file.save(file_path)
 
-        # Perform prediction based on file type
+       
         if file.content_type.startswith("image"):
            
             img = transform(cv2.imread(file_path))

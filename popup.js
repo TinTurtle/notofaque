@@ -1,3 +1,4 @@
+// popup.js
 document.querySelector('form').addEventListener('submit', (event) => {
     event.preventDefault();
 
@@ -13,12 +14,10 @@ document.querySelector('form').addEventListener('submit', (event) => {
             body: formData
         })
             .then(response => {
-               
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
 
-                
                 const contentType = response.headers.get("content-type");
                 if (contentType && contentType.includes("application/json")) {
                     return response.json();
@@ -27,14 +26,17 @@ document.querySelector('form').addEventListener('submit', (event) => {
                 }
             })
             .then(data => {
-                
-                if(data.result==="FAKE"){
-                    alert("DEEPFAKE DETECTED!\nReport on this link: https://eservices.tnpolice.gov.in/CCTNSNICSDC/RedirectToNationalCyberCrimeReportingPortal%28NCRP%29")
+                if (data.result === "FAKE") {
+                    document.getElementById('reportButton').style.display = 'block';
+                    document.getElementById('reportButton').addEventListener('click', () => {
+                        // Open a new tab with the specified report link
+                        window.open('https://eservices.tnpolice.gov.in/CCTNSNICSDC/RedirectToNationalCyberCrimeReportingPortal%28NCRP%29', '_blank');
+                    });
+                    alert("DEEPFAKE DETECTED!\nA report button is available for reporting.");
                 }
-                if(data.result==="REAL"){
-                    alert("Image is Real.")
+                if (data.result === "REAL") {
+                    alert("Image is Real.");
                 }
-                
             })
             .catch(error => console.error('Error:', error));
     }
