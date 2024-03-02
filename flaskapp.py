@@ -3,8 +3,7 @@ from flask import Flask, render_template, request
 import cv2
 from torchvision import transforms
 from werkzeug.utils import secure_filename
-# from model import Model
-# from Predict.ipynb import predict
+
 import torch
 import numpy as np
 
