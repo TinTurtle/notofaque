@@ -55,8 +55,7 @@ chrome.contextMenus.onClicked.addListener(( info, tab ) => {
       });
     }
 });
-// background.js
-// background.js
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === 'predict') {
        
